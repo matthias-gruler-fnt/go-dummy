@@ -1,0 +1,9 @@
+version: '3'
+
+tasks:
+  dev:
+    cmds:
+      - air -c .air.toml
+  build:
+    cmds:
+      - go build -o go-dummy.exe .
