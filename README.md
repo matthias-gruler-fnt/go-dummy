@@ -46,6 +46,10 @@ Steps:
     ```shell
     git tag "$(svu next)"
     ```
+1. Make sure to have variable GITHUB_TOKEN set in your environment:
+    ```powershell
+   $env:GITHUB_TOKEN="___REPLACE_ME___"
+    ```
 1. Create the release: 
     ```shell
     task release

@@ -49,6 +49,16 @@ archives:
       - goos: windows
         format: zip
 
+release:
+  github:
+    owner: matthias-gruler-fnt
+    name: go-dummy
+  draft: true
+  replace_existing_draft: true
+  prerelease: auto
+  make_latest: true
+  #disable: true
+
 changelog:
   sort: asc
   filters:
