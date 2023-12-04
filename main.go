@@ -2,12 +2,27 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 )
 
+var ( // injected upon building by goreleaser
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
+)
+
 func main() {
+	fmt.Println("==========================================================")
+	fmt.Println("                       go-dummy")
+	fmt.Println("----------------------------------------------------------")
+	fmt.Printf(" Version    : %s\n", version)
+	fmt.Printf(" Build Date : %s\n", date)
+	fmt.Printf(" Git Commit : %s\n", commit)
+	fmt.Println("==========================================================")
+
 	ech := echo.New()
 
 	ech.GET("/", func(c echo.Context) error {

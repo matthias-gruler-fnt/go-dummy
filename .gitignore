@@ -22,3 +22,6 @@ go.work
 
 # Air temp directory
 tmp/
+
+# Build/Release artifacts by goreleaser
+dist/

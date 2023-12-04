@@ -6,4 +6,10 @@ tasks:
       - air -c .air.toml
   build:
     cmds:
-      - go build -o go-dummy.exe .
+      - goreleaser build --clean --snapshot
+  release-local:
+    cmds:
+      - goreleaser release --clean --snapshot
+  release:
+    cmds:
+      - goreleaser release --clean
