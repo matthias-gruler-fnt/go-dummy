@@ -27,7 +27,8 @@ builds:
 
 dockers:
   - image_templates:
-    - matthias-gruler-fnt/go-dummy:{{ .Version }}
+    - ghcr.io/matthias-gruler-fnt/go-dummy:{{ .Version }}
+    - ghcr.io/matthias-gruler-fnt/go-dummy:latest
     goos: linux
     goarch: amd64
     skip_push: auto
