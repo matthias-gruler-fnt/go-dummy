@@ -1,0 +1,21 @@
+GET http://localhost:8000/
+
+###
+
+GET http://localhost:8000/health
+content-type: application/json
+
+###
+
+GET http://localhost:8000/stderror
+content-type: application/json
+
+###
+
+GET http://localhost:8000/error
+content-type: application/json
+
+###
+
+GET http://localhost:8000/items
+content-type: application/json
