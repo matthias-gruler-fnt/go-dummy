@@ -28,10 +28,18 @@ jobs:
           echo "RELEASE ${{ github.event.release }}"
           echo "TAG_NAME ${{ github.event.release.tag_name }}"
           echo "INPUTS.TAG ${{ inputs.tag }}"
-      # - name: Login to Harbor Registry
-      #   uses: docker/login-action@v3
-      #   with:
-      #     registry: $HARBOR_URL
-      #     username: ${{ secrets.HARBOR_USERNAME }}
-      #     password: ${{ secrets.HARBOR_PASSWORD }}
+          
+      - name: Login to Harbor Registry
+        uses: docker/login-action@v3
+        with:
+          registry: $HARBOR_URL
+          username: ${{ secrets.HARBOR_USERNAME }}
+          password: ${{ secrets.HARBOR_PASSWORD }}
+          
+      # --tag ghcr.io/matthias-gruler-fnt/go-dummy:latest \
+      - name: Push image to Harbor Registry
+        run: |
+          docker buildx imagetools create \
+            --tag ghcr.io/matthias-gruler-fnt/go-dummy:${{ inputs.tag }} \
+            $HARBOR_URL/mgr/go-dummy:${{ inputs.tag }} 
             
