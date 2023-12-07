@@ -28,6 +28,14 @@ jobs:
           echo "RELEASE ${{ github.event.release }}"
           echo "TAG_NAME ${{ github.event.release.tag_name }}"
           echo "INPUTS.TAG ${{ inputs.tag }}"
+          echo "TAG=${{ inputs.tag }}" >> $GITHUB_ENV
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Login to Harbor Registry
         uses: docker/login-action@v3
@@ -39,7 +47,9 @@ jobs:
       # --tag ghcr.io/matthias-gruler-fnt/go-dummy:latest \
       - name: Push image to Harbor Registry
         run: |
-          docker buildx imagetools create \
-            --tag ghcr.io/matthias-gruler-fnt/go-dummy:${{ inputs.tag }} \
-            $HARBOR_URL/mgr/go-dummy:${{ inputs.tag }} 
+          srcImg=ghcr.io/matthias-gruler-fnt/go-dummy:${{ env.TAG }}
+          destImg=$HARBOR_URL/mgr/go-dummy:${{ env.TAG }}
+          docker pull $srcImg
+          docker tag $srcImg $destImg
+          docker push $destImg
             
