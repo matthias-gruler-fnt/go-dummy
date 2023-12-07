@@ -11,6 +11,9 @@ on:
   release:
     types: [published, created, edited]
 
+env:
+  HARBOR_REGISTRY: ${{ vars.HARBOR_REGISTRY || 'docker.ops.fntcloud.de' }}
+
 jobs:
   push-to-harbor:
     runs-on: ubuntu-latest
