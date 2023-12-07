@@ -12,26 +12,24 @@ on:
     types: [published, created, edited]
 
 env:
-  HARBOR_URL: docker.ops.fntcloud.de
-
-# permissions:
-#   contents: write
-#   packages: write
+  HARBOR_REGISTRY: docker.ops.fntcloud.de
 
 jobs:
   push-to-harbor:
     runs-on: ubuntu-latest
     steps:
-      - name: Print
+      - name: Process input
         run: |
-          echo "EVENT ${{ github.event_name }}"
-          echo "RELEASE ${{ github.event.release }}"
-          echo "TAG_NAME ${{ github.event.release.tag_name }}"
-          echo "INPUTS.TAG ${{ inputs.tag }}"
-          tag=${{ inputs.tag }}
+          echo "event_name: ${{ github.event_name }}"
+          echo "release: ${{ github.event.release }}"
+          echo "release.tag_name: ${{ github.event.release.tag_name }}"
+          echo "inputs.tag: ${{ inputs.tag }}"
+          
+          tag=${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.event.release.tag_name }}
           # remove trailing 'v'
           tag=$(echo $tag | sed 's/^v//')
           # make available to next steps
+          echo "TAG: $tag"
           echo "TAG=$tag" >> $GITHUB_ENV
 
       - name: Login to GitHub Container Registry
@@ -44,7 +42,7 @@ jobs:
       - name: Login to Harbor Registry
         uses: docker/login-action@v3
         with:
-          registry: ${{ env.HARBOR_URL }}
+          registry: ${{ env.HARBOR_REGISTRY }}
           username: ${{ secrets.HARBOR_USERNAME }}
           password: ${{ secrets.HARBOR_PASSWORD }}
           
@@ -52,7 +50,7 @@ jobs:
       - name: Push image to Harbor Registry
         run: |
           srcImg=ghcr.io/matthias-gruler-fnt/go-dummy:${{ env.TAG }}
-          destImg=$HARBOR_URL/mgr/go-dummy:${{ env.TAG }}
+          destImg=$HARBOR_REGISTRY/mgr/go-dummy:${{ env.TAG }}
           docker pull $srcImg
           docker tag $srcImg $destImg
           docker push $destImg
