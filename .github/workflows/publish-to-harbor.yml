@@ -11,9 +11,6 @@ on:
   release:
     types: [published, created, edited]
 
-env:
-  HARBOR_REGISTRY: docker.ops.fntcloud.de
-
 jobs:
   push-to-harbor:
     runs-on: ubuntu-latest
@@ -50,7 +47,7 @@ jobs:
       - name: Push image to Harbor Registry
         run: |
           srcImg=ghcr.io/matthias-gruler-fnt/go-dummy:${{ env.TAG }}
-          destImg=$HARBOR_REGISTRY/mgr/go-dummy:${{ env.TAG }}
+          destImg=${{ env.HARBOR_REGISTRY }}/mgr/go-dummy:${{ env.TAG }}
           docker pull $srcImg
           docker tag $srcImg $destImg
           docker push $destImg
